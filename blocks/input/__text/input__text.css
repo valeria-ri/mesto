@@ -1,0 +1,16 @@
+.input__text {
+  line-height: 1.21;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  outline: 0;
+  padding-bottom: 8px;
+  margin: 0 0 30px;
+}
+
+.input__text:last-of-type {
+  margin-bottom: 0;
+}

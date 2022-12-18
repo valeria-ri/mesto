@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <meta name="description" content="Место - сервис про путешествия">  
+  <meta name="author" content="Валерия Рыбакова">  
+  <link rel="stylesheet" href="./pages/index.css">  
+  <title>Mesto</title>
+</head>
+<body class="root">
+  <div class="page">
+    <header class="header">
+      <img class="header__logo" src="./images/logo.svg" alt="Логотип Место">
+    </header>
+    <main class="content">
+      <section class="profile">
+        <article class="profile__user">
+          <img class="profile__avatar" src="./images/profile-avatar.jpeg" alt="Аватар">
+          <div class="profile__info">
+            <div class="profile__name-container">
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="profile__edit-button"></button>
+            </div>
+            <p class="profile__about">Исследователь океана</p>
+          </div>
+        </article>
+        <button class="profile__add-button"></button>
+      </section>
+      <section class="card-grid">
+        <ul class="card-grid__items">
+          <li class="card">
+              <img class="card__image" src="./images/card-karachaevsk.jpeg" alt="Тут должно быть фото">
+              <div class="card__caption">
+                <h2 class="card__title">Карачаевск</h2>
+                <button class="card__like"></button>
+              </div>
+          </li>
+          <li class="card">
+            <img class="card__image" src="./images/card-elbrus.jpeg" alt="Тут должно быть фото">
+            <div class="card__caption">
+              <h2 class="card__title">Гора Эльбрус</h2>
+              <button class="card__like"></button>
+            </div>
+          </li>
+          <li class="card">
+            <img class="card__image" src="./images/card-dombay.jpeg" alt="Тут должно быть фото">
+            <div class="card__caption">
+              <h2 class="card__title">Домбай</h2>
+              <button class="card__like"></button>
+            </div>
+          </li>
+          <li class="card">
+            <img class="card__image" src="./images/card-karelia.jpg" alt="Тут должно быть фото">
+            <div class="card__caption">
+              <h2 class="card__title">Карелия</h2>
+              <button class="card__like"></button>
+            </div>
+          </li>
+          <li class="card">
+            <img class="card__image" src="./images/card-murmansk.jpg" alt="Тут должно быть фото">
+            <div class="card__caption">
+              <h2 class="card__title">Мурманская область</h2>
+              <button class="card__like"></button>
+            </div>
+          </li>
+          <li class="card">
+            <img class="card__image" src="./images/card-teriberka.jpg" alt="Тут должно быть фото">
+            <div class="card__caption">
+              <h2 class="card__title">Териберка</h2>
+              <button class="card__like"></button>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="popup">
+        <div class="popup__container">
+          <h2 class="popup__title">Редактировать профиль</h2>
+          <form class="input">
+            <input type="text" placeholder="Имя" class="input__text input__text_type_name">
+            <input type="text" placeholder="О себе" class="input__text input__text_type_about">
+            <button type="submit" class="input__submit-btn">Сохранить</button>
+          </form>
+          <button class="popup__close-btn"></button>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
+    </footer>
+  </div>
+  <script src="./index.js"></script>
+</body>
+</html>
