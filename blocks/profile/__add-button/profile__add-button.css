@@ -7,6 +7,8 @@
   background-image: url(../../../images/icons/profile-add-btn.svg);
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 22px 22px;
+  padding: 0;
   cursor: pointer;
   transition: opacity 350ms ease;
 }
@@ -15,8 +17,9 @@
   opacity: .6;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 960px) {
   .profile__add-button {
     width: 282px;
+    background-size: 16px 16px;
   }
 }
