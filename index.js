@@ -1,31 +1,3 @@
-//массив карточек
-const initialCards = [
-  {
-    name: 'Карачаевск',
-    link: './images/card-karachaevsk.jpeg'
-  },
-  {
-    name: 'Гора Эльбрус',
-    link: './images/card-elbrus.jpeg'
-  },
-  {
-    name: 'Домбай',
-    link: './images/card-dombay.jpeg'
-  },
-  {
-    name: 'Карелия',
-    link: './images/card-karelia.jpg'
-  },
-  {
-    name: 'Мурманская область',
-    link: './images/card-murmansk.jpg'
-  },
-  {
-    name: 'Териберка',
-    link: './images/card-teriberka.jpg'
-  }
-];
-
 //профиль
 const userName = document.querySelector('.profile__name');
 const userJob = document.querySelector('.profile__about');
@@ -33,25 +5,22 @@ const userJob = document.querySelector('.profile__about');
 //карточки
 const cardTemplate = document.querySelector('.card-template').content;
 const cardGrid = document.querySelector('.card-grid__items');
-const card = document.querySelector('.card');
-const cardImage = document.querySelector('.card__image');
 
 //попапы
-const popup = document.querySelector('.popup');
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
 const popupImg = document.querySelector('.popup_type_image');
+const bigImg = popupImg.querySelector('.popup__image');
+const popupCaption = popupImg.querySelector('.popup__caption');
 
 //формы попапов
 const formEdit = popupEdit.querySelector('.popup__form_type_edit');
 const userNameInput = formEdit.querySelector('.popup__text-input_type_name');
 const userJobInput = formEdit.querySelector('.popup__text-input_type_about');
-const submitEdit = formEdit.querySelector('.popup__submit-btn_type_edit');
 
 const formAdd = popupAdd.querySelector('.popup__form_type_add');
 const cardNameInput = formAdd.querySelector('.popup__text-input_type_card-name');
 const cardLinkInput = formAdd.querySelector('.popup__text-input_type_card-link');
-const submitAdd = formAdd.querySelector('.popup__submit-btn_type_add');
 
 //кнопки
 const btnEdit = document.querySelector('.profile__edit-button');
@@ -77,12 +46,10 @@ btnAdd.addEventListener('click', function() {
   openPopup(popupAdd);
 });
 
-function openPopupImg(item) {
-  const bigImg = popupImg.querySelector('.popup__image');
-  const popupCaption = popupImg.querySelector('.popup__caption');
-  bigImg.src = item.link;
-  bigImg.alt = item.name;
-  popupCaption.textContent = item.name;
+function openPopupImg({name, link}) {
+  bigImg.src = link;
+  bigImg.alt = name;
+  popupCaption.textContent = name;
   openPopup(popupImg);
 }
 
@@ -114,26 +81,26 @@ function deleteCard(evt) {
 }
 
 //создание карточек
-function createCard(item) {
+function createCard({name, link}) {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImg = card.querySelector('.card__image');
   const cardName = card.querySelector('.card__title');
   const btnLikeCard = card.querySelector('.card__like');
   const btnDeleteCard = card.querySelector('.card__delete');
-  cardImg.src = item.link;
-  cardImg.alt = item.name;
-  cardName.textContent = item.name;
+  cardImg.src = link;
+  cardImg.alt = name;
+  cardName.textContent = name;
   btnLikeCard.addEventListener('click', likeCard);
   btnDeleteCard.addEventListener('click', deleteCard);
   cardImg.addEventListener('click', function() {
-    openPopupImg(item);
+    openPopupImg({name, link});
   });
   return card;
 }
 
 function renderCards() {
-  initialCards.forEach(function(item) {
-    const cardHTML = createCard(item);
+  initialCards.forEach(function({name, link}) {
+    const cardHTML = createCard({name, link});
     cardGrid.append(cardHTML);
   })
 }
