@@ -12,15 +12,16 @@ const popupAdd = document.querySelector('.popup_type_add');
 const popupImg = document.querySelector('.popup_type_image');
 const bigImg = popupImg.querySelector('.popup__image');
 const popupCaption = popupImg.querySelector('.popup__caption');
+const popups = Array.from(document.querySelectorAll('.popup'));
 
 //формы попапов
 const formEdit = popupEdit.querySelector('.popup__form_type_edit');
-const userNameInput = formEdit.querySelector('.popup__text-input_type_name');
-const userJobInput = formEdit.querySelector('.popup__text-input_type_about');
+const userNameInput = formEdit.querySelector('.popup__input_type_name');
+const userJobInput = formEdit.querySelector('.popup__input_type_about');
 
 const formAdd = popupAdd.querySelector('.popup__form_type_add');
-const cardNameInput = formAdd.querySelector('.popup__text-input_type_card-name');
-const cardLinkInput = formAdd.querySelector('.popup__text-input_type_card-link');
+const cardNameInput = formAdd.querySelector('.popup__input_type_card-name');
+const cardLinkInput = formAdd.querySelector('.popup__input_type_card-link');
 
 //кнопки
 const btnEdit = document.querySelector('.profile__edit-button');
@@ -34,6 +35,8 @@ const btnCloseImgPopup = popupImg.querySelector('.popup__close-btn_type_image');
 //открытие попапа
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
+  document.addEventListener('keydown', closePopupEsc);
+  closePopupClick(popupElement);
 }
 
 btnEdit.addEventListener('click', function() {
@@ -56,6 +59,24 @@ function openPopupImg({name, link}) {
 //закрытие попапа
 function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupEsc);
+}
+
+function closePopupEsc(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
+}
+
+function closePopupClick() {
+  popups.forEach(function(popup) {
+    popup.addEventListener('click', function(evt) {
+      if (evt.target.classList.contains('popup_opened')) {
+        closePopup(popup);
+      }
+    })
+  })
 }
 
 btnCloseEditPopup.addEventListener('click', function() {
