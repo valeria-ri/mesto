@@ -1,61 +1,39 @@
-//профиль
-const userName = document.querySelector('.profile__name');
-const userJob = document.querySelector('.profile__about');
+import {initialCards, cardConfig, validationConfig, userName, userJob, popupEdit, popupAdd, popupShow, popupImg, popupCaption, popups, btnEdit, btnAdd, formEdit, userNameInput, userJobInput, formAdd, cardNameInput, cardLinkInput, cardGrid} from './constants.js';
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
 
-//карточки
-const cardTemplate = document.querySelector('.card-template').content;
-const cardGrid = document.querySelector('.card-grid__items');
+//Вызов валидации
+const formAddValidation = new FormValidator(validationConfig, formAdd);
+const formEditValidation = new FormValidator(validationConfig, formEdit);
+formAddValidation.enableValidation();
+formEditValidation.enableValidation();
 
-//попапы
-const popupEdit = document.querySelector('.popup_type_edit');
-const popupAdd = document.querySelector('.popup_type_add');
-const popupImg = document.querySelector('.popup_type_image');
-const bigImg = popupImg.querySelector('.popup__image');
-const popupCaption = popupImg.querySelector('.popup__caption');
-const popups = document.querySelectorAll('.popup');
-
-//формы попапов
-const formEdit = document.forms.user;
-const userNameInput = formEdit.elements.username;
-const userJobInput = formEdit.elements.userjob;
-
-const formAdd = document.forms.newcard;
-const cardNameInput = formAdd.elements.cardname;
-const cardLinkInput = formAdd.elements.cardlink;
-
-//кнопки
-const btnEdit = document.querySelector('.profile__edit-button');
-const btnAdd = document.querySelector('.profile__add-button');
-const btnCloseEditPopup = popupEdit.querySelector('.popup__close-btn_type_edit');
-const btnCloseAddPopup = popupAdd.querySelector('.popup__close-btn_type_add');
-const btnCloseImgPopup = popupImg.querySelector('.popup__close-btn_type_image');
-
-
-
-//открытие попапа
+//Функции открытия попапов
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
   document.addEventListener('keydown', closePopupEsc);
+}
+
+function openPopupShow(name, link) {
+  popupImg.src = link;
+  popupImg.alt = name;
+  popupCaption.textContent = name;
+  openPopup(popupShow);
 }
 
 btnEdit.addEventListener('click', function() {
   openPopup(popupEdit);
   userNameInput.value = userName.textContent;
   userJobInput.value = userJob.textContent;
+  formEditValidation.resetValidation();
 });
 
 btnAdd.addEventListener('click', function() {
   openPopup(popupAdd);
+  formAddValidation.resetValidation();
 });
 
-function openPopupImg({name, link}) {
-  bigImg.src = link;
-  bigImg.alt = name;
-  popupCaption.textContent = name;
-  openPopup(popupImg);
-}
-
-//закрытие попапа
+//Функции закрытия попапов
 function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
   document.removeEventListener('keydown', closePopupEsc);
@@ -79,43 +57,23 @@ popups.forEach(function(popup) {
   })
 })
 
-//лайк карточки
-function toggleLike(evt) {
-  evt.target.classList.toggle('card__like_active');
+//Создание любой карточки
+function createNewCard(item) {
+  const card = new Card(item, cardConfig.cardTemplateSelector, openPopupShow);
+  const element = card.getCard();
+  return element;
 }
 
-//удаление карточки
-function deleteCard(evt) {
-  evt.target.closest('.card').remove();
-}
-
-//создание карточек
-function createCard({name, link}) {
-  const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardImg = card.querySelector('.card__image');
-  const cardName = card.querySelector('.card__title');
-  const btnLikeCard = card.querySelector('.card__like');
-  const btnDeleteCard = card.querySelector('.card__delete');
-  cardImg.src = link;
-  cardImg.alt = name;
-  cardName.textContent = name;
-  btnLikeCard.addEventListener('click', toggleLike);
-  btnDeleteCard.addEventListener('click', deleteCard);
-  cardImg.addEventListener('click', function() {
-    openPopupImg({name, link});
-  });
-  return card;
-}
-
+//Создание карточки из класса
 function renderCards() {
-  initialCards.forEach(function({name, link}) {
-    const cardHTML = createCard({name, link});
-    cardGrid.append(cardHTML);
+  initialCards.forEach((item) => {
+    const card = createNewCard(item);
+    cardGrid.append(card);
   })
 }
 renderCards();
 
-//обработчики форм
+//Обработчики форм
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
   userName.textContent = userNameInput.value;
@@ -127,11 +85,8 @@ formEdit.addEventListener('submit', handleFormEditSubmit);
 
 function handleFormAddSubmit(evt) {
   evt.preventDefault();
-  const newCardImg = cardLinkInput.value;
-  const newCardName = cardNameInput.value;
-  const newCard = createCard({name: newCardName, link: newCardImg});
+  const newCard = createNewCard({name: cardNameInput.value, link: cardLinkInput.value});
   cardGrid.prepend(newCard);
-  formAdd.reset();
   closePopup(popupAdd);
 }
 
