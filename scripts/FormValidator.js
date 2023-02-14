@@ -2,8 +2,8 @@ class FormValidator {
   constructor(config, formElement) {
     this._config = config;
     this._form = formElement;
-    this._submitButton = formElement.querySelector(config.submitButtonSelector);
-    this._inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+    this._submitButton = this._form.querySelector(this._config.submitButtonSelector);
+    this._inputList = Array.from(this._form.querySelectorAll(this._config.inputSelector));
   }
 
   _showInputError = (inputElement) => {

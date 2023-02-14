@@ -3,10 +3,22 @@ import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
 //Вызов валидации
-const formAddValidation = new FormValidator(validationConfig, formAdd);
-const formEditValidation = new FormValidator(validationConfig, formEdit);
-formAddValidation.enableValidation();
-formEditValidation.enableValidation();
+
+const formValidators = {}
+
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    const formName = formElement.getAttribute('name');
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(validationConfig);
+
 
 //Функции открытия попапов
 function openPopup(popupElement) {
@@ -25,12 +37,13 @@ btnEdit.addEventListener('click', function() {
   openPopup(popupEdit);
   userNameInput.value = userName.textContent;
   userJobInput.value = userJob.textContent;
-  formEditValidation.resetValidation();
+  formValidators['user'].resetValidation();
 });
 
 btnAdd.addEventListener('click', function() {
   openPopup(popupAdd);
-  formAddValidation.resetValidation();
+  formAdd.reset();
+  formValidators['newcard'].resetValidation();
 });
 
 //Функции закрытия попапов
