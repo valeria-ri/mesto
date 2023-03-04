@@ -1,12 +1,13 @@
 class Card {
-  constructor(data, template, openPopupShow) {
+  constructor({data, handleCardClick}, cardTemplateSelector) {
     this._name = data.name;
     this._link = data.link;
-    this._template = template;
-    this._openPopupShow = openPopupShow;
+    this._handleCardClick = handleCardClick;
+    this._template = cardTemplateSelector;
     
     this._deleteCard = this._deleteCard.bind(this);
     this._toggleLike = this._toggleLike.bind(this);
+    this._openImg = this._openImg.bind(this);
   }
 
   _getCardFromTemplate() {
@@ -20,9 +21,7 @@ class Card {
   _addEventListeners() {
     this._deleteButton.addEventListener('click', this._deleteCard);
     this._likeButton.addEventListener('click', this._toggleLike);
-    this._cardImage.addEventListener('click', () => {
-      this._openPopupShow(this._name, this._link);
-    });
+    this._cardImage.addEventListener('click', this._openImg);
   }
 
   _deleteCard() {
@@ -33,7 +32,11 @@ class Card {
     this._likeButton.classList.toggle('card__like_active');
   }
 
-  getCard() {
+  _openImg() {
+    this._handleCardClick(this._name, this._link);
+  }
+
+  generateCard() {
     this._element = this._getCardFromTemplate();
     this._element.querySelector('.card__title').textContent = this._name;
 
