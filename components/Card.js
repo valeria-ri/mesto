@@ -1,9 +1,10 @@
 class Card {
-  constructor({data, handleCardClick}, cardTemplateSelector) {
+  constructor({data, handleCardClick}, cardConfig) {
     this._name = data.name;
     this._link = data.link;
     this._handleCardClick = handleCardClick;
-    this._template = cardTemplateSelector;
+
+    this._cardConfig = cardConfig;
     
     this._deleteCard = this._deleteCard.bind(this);
     this._toggleLike = this._toggleLike.bind(this);
@@ -12,9 +13,9 @@ class Card {
 
   _getCardFromTemplate() {
     return document
-      .querySelector(this._template)
+      .querySelector(this._cardConfig.cardTemplateSelector)
       .content
-      .querySelector('.card')
+      .querySelector(this._cardConfig.cardSelector)
       .cloneNode(true);
   }
 
@@ -29,7 +30,7 @@ class Card {
   }
 
   _toggleLike() {
-    this._likeButton.classList.toggle('card__like_active');
+    this._likeButton.classList.toggle(this._cardConfig.cardActiveLikeSelector);
   }
 
   _openImg() {
@@ -38,14 +39,14 @@ class Card {
 
   generateCard() {
     this._element = this._getCardFromTemplate();
-    this._element.querySelector('.card__title').textContent = this._name;
+    this._element.querySelector(this._cardConfig.cardTitleSelector).textContent = this._name;
 
-    this._cardImage = this._element.querySelector('.card__image');
+    this._cardImage = this._element.querySelector(this._cardConfig.cardImgSelector);
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
 
-    this._deleteButton = this._element.querySelector('.card__delete');
-    this._likeButton = this._element.querySelector('.card__like');
+    this._deleteButton = this._element.querySelector(this._cardConfig.cardDeleteSelector);
+    this._likeButton = this._element.querySelector(this._cardConfig.cardLikeSelector);
 
     this._addEventListeners();
     return this._element;

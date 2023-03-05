@@ -26,11 +26,15 @@ const initialCards = [
 ];
 
 const cardConfig = {
-  cardGridSelector: '.card-grid__items',
   cardTemplateSelector: '.card-template',
+  cardSelector: '.card',
+  cardLikeSelector: '.card__like',
+  cardActiveLikeSelector: 'card__like_active',
+  cardDeleteSelector: '.card__delete',
+  cardTitleSelector: '.card__title',
+  cardImgSelector: '.card__image',
+  cardGridSelector: '.card-grid__items'
 }
-
-const cardTemplateSelector = '.card-template';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -41,35 +45,38 @@ const validationConfig = {
   errorClass: 'popup__input-error_visible'
 };
 
-//Профиль
-const userName = document.querySelector('.profile__name');
-const userJob = document.querySelector('.profile__about');
-const userNameSelector = '.profile__name';
-const userJobSelector = '.profile__about';
+const editProfileConfig = {
+  userNameSelector: '.profile__name',
+  userJobSelector: '.profile__about',
+  popupEditSelector: '.popup_type_edit',
+  btnEdit: document.querySelector('.profile__edit-button'),
+  formEdit: document.forms.user,
+  userNameInput: document.querySelector('.popup__input_type_name'),
+  userJobInput: document.querySelector('.popup__input_type_about')
+}
 
-//Попапы
-const popupEdit = document.querySelector('.popup_type_edit');
-const popupEditSelector = '.popup_type_edit';
-const popupAdd = document.querySelector('.popup_type_add');
-const popupAddSelector = '.popup_type_add';
-const popupShow = document.querySelector('.popup_type_image');
-const popupImg = popupShow.querySelector('.popup__image');
-const popupImgSelector = '.popup_type_image';
-const popupCaption = popupShow.querySelector('.popup__caption');
-const popups = document.querySelectorAll('.popup');
-const btnEdit = document.querySelector('.profile__edit-button');
-const btnAdd = document.querySelector('.profile__add-button');
+const addProfileConfig = {
+  popupAddSelector: '.popup_type_add',
+  btnAdd: document.querySelector('.profile__add-button'),
+  formAdd: document.forms.newcard
+}
 
-//Формы попапов
-const formEdit = document.forms.user;
-const userNameInput = formEdit.elements.username;
-const userJobInput = formEdit.elements.userjob;
-const formAdd = document.forms.newcard;
-const cardNameInput = formAdd.elements.cardname;
-const cardLinkInput = formAdd.elements.cardlink;
+const popupsElementsConfig = {
+  popupImgSelector: '.popup_type_image',
+  openedPopupSelector: 'popup_opened',
+  closePopupBtnSelector: 'popup__close-btn',
+  imageSelector: '.popup__image',
+  captionSelector: '.popup__caption',
+  popupFormSelector: '.popup__form',
+  popupInputSelector: '.popup__input'
+}
 
-//Контейнер карточек
-const cardGrid = document.querySelector(cardConfig.cardGridSelector);
-const cardGridSelector = cardConfig.cardGridSelector;
 
-export {initialCards, cardConfig, cardTemplateSelector, validationConfig, userName, userNameSelector, userJobSelector, userJob, popupEdit, popupEditSelector, popupAdd, popupAddSelector, popupShow, popupImg, popupImgSelector, popupCaption, popups, btnEdit, btnAdd, formEdit, userNameInput, userJobInput, formAdd, cardNameInput, cardLinkInput, cardGrid, cardGridSelector};
+export {
+  initialCards,
+  cardConfig,
+  validationConfig,
+  editProfileConfig,
+  addProfileConfig,
+  popupsElementsConfig
+};

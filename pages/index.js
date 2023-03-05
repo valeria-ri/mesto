@@ -1,30 +1,20 @@
 import Card from '../components/Card.js';
 import Section from '../components/Section.js';
 import FormValidator from '../components/FormValidator.js';
-//import Popup from '../components/Popup.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 
 import {
-  cardTemplateSelector,
   initialCards,
-  cardGridSelector,
-  userNameSelector, 
-  userJobSelector,
-  popupImgSelector,
-  popupEditSelector,
-  popupAddSelector,
+  cardConfig,
   validationConfig,
-  formEdit,
-  userNameInput,
-  userJobInput,
-  formAdd,
-  btnEdit,
-  btnAdd,
+  editProfileConfig,
+  addProfileConfig,
+  popupsElementsConfig,
 } from '../utils/constants.js';
 
-const popupWithImage = new PopupWithImage(popupImgSelector);
+const popupWithImage = new PopupWithImage(popupsElementsConfig.popupImgSelector, popupsElementsConfig);
 popupWithImage.setEventListeners();
 
 const createCard = (data) => {
@@ -33,7 +23,7 @@ const createCard = (data) => {
     handleCardClick: () => {
       popupWithImage.open(data)
     }
-  }, cardTemplateSelector);
+  }, cardConfig);
   return card;
 }
 
@@ -44,47 +34,47 @@ const cardList = new Section({
     const element = card.generateCard();
     cardList.addItem(element);
   }
-}, cardGridSelector)
+}, cardConfig.cardGridSelector)
 
 cardList.renderItems();
 
 const userInfo = new UserInfo({
-  userNameSelector: userNameSelector,
-  userJobSelector: userJobSelector
+  userNameSelector: editProfileConfig.userNameSelector,
+  userJobSelector: editProfileConfig.userJobSelector
 })
 
-const editFormValidator = new FormValidator(validationConfig, formEdit);
+const editFormValidator = new FormValidator(validationConfig, editProfileConfig.formEdit);
 editFormValidator.enableValidation();
 
-const addFormValidator = new FormValidator(validationConfig, formAdd);
+const addFormValidator = new FormValidator(validationConfig, addProfileConfig.formAdd);
 addFormValidator.enableValidation();
 
 
 
-const popupWithEditForm = new PopupWithForm(popupEditSelector, () => {
-  userInfo.setUserInfo(userNameInput, userJobInput);
-})
+const popupWithEditForm = new PopupWithForm(editProfileConfig.popupEditSelector, () => {
+  userInfo.setUserInfo(editProfileConfig.userNameInput, editProfileConfig.userJobInput);
+}, popupsElementsConfig)
 
 popupWithEditForm.setEventListeners();
 
-btnEdit.addEventListener('click', () => {
+editProfileConfig.btnEdit.addEventListener('click', () => {
   editFormValidator.resetValidation();
   const user = userInfo.getUserInfo();
-  userNameInput.value = user.name;
-  userJobInput.value = user.job;
+  editProfileConfig.userNameInput.value = user.name;
+  editProfileConfig.userJobInput.value = user.job;
   popupWithEditForm.open();
 })
 
 
-const popupWithAddForm = new PopupWithForm(popupAddSelector, (newItem) => {
+const popupWithAddForm = new PopupWithForm(addProfileConfig.popupAddSelector, (newItem) => {
   const newCard = createCard(newItem);
   const newElement = newCard.generateCard();
   cardList.addItem(newElement);
-})
+}, popupsElementsConfig)
 
 popupWithAddForm.setEventListeners();
 
-btnAdd.addEventListener('click', () => {
+addProfileConfig.btnAdd.addEventListener('click', () => {
   addFormValidator.resetValidation();
   popupWithAddForm.open();
 })
