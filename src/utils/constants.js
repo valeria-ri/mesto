@@ -1,27 +1,27 @@
 const initialCards = [
   {
-    name: 'Карачаевск',
-    link: './images/card-karachaevsk.jpeg'
+    name: 'Эльбрус',
+    link: 'https://images.unsplash.com/photo-1638989420853-a6437f7a0d2c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1365&q=80'
   },
   {
-    name: 'Гора Эльбрус',
-    link: './images/card-elbrus.jpeg'
+    name: 'Байкал',
+    link: 'https://images.unsplash.com/photo-1605640486537-93da02d98119?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80'
   },
   {
     name: 'Домбай',
-    link: './images/card-dombay.jpeg'
+    link: 'https://images.unsplash.com/photo-1599821020079-515af554d944?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80'
+  },
+  {
+    name: 'Плато Лаго-Наки',
+    link: 'https://images.unsplash.com/photo-1538649575097-06857fa59f34?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80'
   },
   {
     name: 'Карелия',
-    link: './images/card-karelia.jpg'
-  },
-  {
-    name: 'Мурманская область',
-    link: './images/card-murmansk.jpg'
+    link: 'https://images.unsplash.com/photo-1604770807934-87599401ba2e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80'
   },
   {
     name: 'Териберка',
-    link: './images/card-teriberka.jpg'
+    link: 'https://images.unsplash.com/photo-1632397606358-1121c7de6c18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80'
   }
 ];
 
