@@ -12,9 +12,9 @@ class UserInfo {
     return this._userInfo;
   }
 
-  setUserInfo(userNameInput, userJobInput) {
-    this._userName.textContent = userNameInput.value;
-    this._userJob.textContent = userJobInput.value;
+  setUserInfo({name, job}) {
+    this._userName.textContent = name;
+    this._userJob.textContent = job;
   }
 }
 

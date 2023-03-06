@@ -53,17 +53,16 @@ addFormValidator.enableValidation();
 
 
 
-const popupWithEditForm = new PopupWithForm(editProfileConfig.popupEditSelector, () => {
-  userInfo.setUserInfo(editProfileConfig.userNameInput, editProfileConfig.userJobInput);
+const popupWithEditForm = new PopupWithForm(editProfileConfig.popupEditSelector, ({name, job}) => {
+  userInfo.setUserInfo({name, job});
 }, popupsElementsConfig)
 
 popupWithEditForm.setEventListeners();
 
 editProfileConfig.btnEdit.addEventListener('click', () => {
   editFormValidator.resetValidation();
-  const user = userInfo.getUserInfo();
-  editProfileConfig.userNameInput.value = user.name;
-  editProfileConfig.userJobInput.value = user.job;
+  const userdata = userInfo.getUserInfo();
+  popupWithEditForm.setInputValues(userdata);
   popupWithEditForm.open();
 })
 
