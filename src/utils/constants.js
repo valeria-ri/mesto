@@ -53,6 +53,7 @@ const editProfileConfig = {
   popupEditSelector: '.popup_type_edit',
   popupAvatarSelector: '.popup_type_avatar',
   btnEdit: document.querySelector('.profile__edit-button'),
+  btnAvatar: document.querySelector('.profile__avatar'),
   formEdit: document.forms.user,
   formAvatar: document.forms.avatar,
   userNameInput: document.querySelector('.popup__input_type_name'),

@@ -18,6 +18,8 @@ import {
   popupsElementsConfig,
 } from '../utils/constants.js';
 
+// Обращение к API
+
 const api = new Api(
   "https://nomoreparties.co/v1/cohort-61",
   "dc4e7a03-585d-4419-af57-53fac49f94a8"
@@ -27,7 +29,6 @@ let userId;
 
 Promise.all([api.getInitialCards(), api.getUserInfo()])
   .then(([items, user]) => {
-    console.log(items);
     userId = user._id;
     userInfo.setUserInfo(user);
     cardList.renderItems(items);
@@ -35,21 +36,40 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
   .catch(err => console.log(err))
 
 
+// Создание экземпляра попапа с картинкой
+
 const popupWithImage = new PopupWithImage(popupsElementsConfig.popupImgSelector, popupsElementsConfig);
 popupWithImage.setEventListeners();
+
+// Создание экземпляра попапа с подтверждением удаления
 
 const popupWithConfirmation = new PopupWithConfirmation(confirmationConfig.popupConfirmSelector, popupsElementsConfig);
 popupWithConfirmation.setEventListeners();
 
+// Создание экземпляра карточки
+
 const createCard = (item) => {
   const card = new Card({
-    data: item, 
+    data: item,
+    // Обработчик клика на картинку
     handleCardClick: () => {
       popupWithImage.open(item)
     },
+    // Обработчик лайка
     handleLikeClick: () => {
-      card.likeCard()
+      if(!card.isLikeActive()) {
+        api
+          .like(item._id)
+          .then(item => card.updateLike(item))
+          .catch(err => console.log(err))
+      } else {
+        api
+          .dislike(item._id)
+          .then(item => card.updateLike(item))
+          .catch(err => console.log(err))
+      }
     },
+    // Обработчик удаления
     handleDeleteClick: () => {
       popupWithConfirmation.handleConfirm(() => {
         popupWithConfirmation.renderLoading(true);
@@ -68,13 +88,13 @@ const createCard = (item) => {
   return card.generateCard();
 }
 
+// Добавление карточек в контейнер
+
 const cardList = new Section(
-  (item) => {
-    const card = createCard(item);
-    cardList.addItem(card);
-  }, 
+  createCard, 
   cardConfig.cardGridSelector)
 
+// Создание экземпляра профиля
 
 const userInfo = new UserInfo({
   userNameSelector: editProfileConfig.userNameSelector,
@@ -82,19 +102,30 @@ const userInfo = new UserInfo({
   userAvatarSelector: editProfileConfig.userAvatarSelector
 })
 
-const editFormValidator = new FormValidator(validationConfig, editProfileConfig.formEdit);
+// Валидаторы форм
+
+const editFormValidator = new FormValidator(
+  validationConfig, 
+  editProfileConfig.formEdit
+);
+
 editFormValidator.enableValidation();
 
-const addFormValidator = new FormValidator(validationConfig, addProfileConfig.formAdd);
+const addFormValidator = new FormValidator(
+  validationConfig, 
+  addProfileConfig.formAdd
+);
+
 addFormValidator.enableValidation();
 
-const editAvatarFormValidator = new FormValidator(validationConfig, editProfileConfig.formAvatar);
+const editAvatarFormValidator = new FormValidator(
+  validationConfig, 
+  editProfileConfig.formAvatar
+);
+
 editAvatarFormValidator.enableValidation();
 
-// const popupWithEditForm = new PopupWithForm(editProfileConfig.popupEditSelector, ({name, job, avatar}) => {
-//   userInfo.setUserInfo({name, job, avatar});
-// }, popupsElementsConfig)
-
+// Создание экземпляра формы редактирования профиля
 
 const popupWithEditForm = new PopupWithForm(
   editProfileConfig.popupEditSelector,
@@ -119,11 +150,7 @@ editProfileConfig.btnEdit.addEventListener('click', () => {
   popupWithEditForm.open();
 })
 
-// const popupWithAddForm = new PopupWithForm(addProfileConfig.popupAddSelector, (newItem) => {
-//   const newCard = createCard(newItem);
-//   const newElement = newCard.generateCard();
-//   cardList.addItem(newElement);
-// }, popupsElementsConfig)
+// Создание экземпляра формы добавления карточки
 
 const popupWithAddForm = new PopupWithForm(
   addProfileConfig.popupAddSelector, 
@@ -131,11 +158,10 @@ const popupWithAddForm = new PopupWithForm(
     popupWithAddForm.renderLoading(true);
     api
       .addCard(newItem)
-      .then(data => cardList.addItem(data))
+      .then(data => cardList.addItem(createCard(data)))
       .catch(err => console.log(err))
       .finally(() => popupWithAddForm.renderLoading(false));
 }, popupsElementsConfig)
-
 
 popupWithAddForm.setEventListeners();
 
@@ -143,6 +169,8 @@ addProfileConfig.btnAdd.addEventListener('click', () => {
   addFormValidator.resetValidation();
   popupWithAddForm.open();
 })
+
+//Создание экземпляра формы редактирования профиля
 
 const popupWithEditAvatarForm = new PopupWithForm(
   editProfileConfig.popupAvatarSelector,
@@ -157,7 +185,7 @@ const popupWithEditAvatarForm = new PopupWithForm(
 
 popupWithEditAvatarForm.setEventListeners();
 
-document.querySelector(editProfileConfig.userAvatarSelector).addEventListener('click', () => {
+editProfileConfig.btnAvatar.addEventListener('click', () => {
   editAvatarFormValidator.resetValidation();
   popupWithEditAvatarForm.open();
 })
