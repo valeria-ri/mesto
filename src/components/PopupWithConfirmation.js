@@ -4,6 +4,7 @@ class PopupWithConfirmation extends Popup {
   constructor(popupSelector, popupsElementsConfig) {
     super(popupSelector, popupsElementsConfig);
     this._confirmBtn = this._popup.querySelector(this._popupsElementsConfig.popupSubmitBtnSelector);
+    this._confirmBtnText = this._confirmBtn.textContent;
   }
 
   handleConfirm(handleConfirmCallback) {
@@ -17,11 +18,11 @@ class PopupWithConfirmation extends Popup {
     })
   }
 
-  renderLoading(isLoading) {
+  renderLoading(isLoading, loadingText='Удаление...') {
     if(isLoading) {
-      this._confirmBtn.textContent = 'Удаление...';
+      this._confirmBtn.textContent = loadingText;
     } else {
-      this._confirmBtn.textContent = 'Да';
+      this._confirmBtn.textContent = this._confirmBtnText;
     }
   }
 }

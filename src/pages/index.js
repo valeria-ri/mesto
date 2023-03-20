@@ -20,10 +20,13 @@ import {
 
 // Обращение к API
 
-const api = new Api(
-  "https://nomoreparties.co/v1/cohort-61",
-  "dc4e7a03-585d-4419-af57-53fac49f94a8"
-);
+const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/cohort-61',
+  headers: {
+    authorization: 'dc4e7a03-585d-4419-af57-53fac49f94a8',
+    'Content-Type': 'application/json'
+  }
+}); 
 
 let userId;
 
@@ -104,26 +107,19 @@ const userInfo = new UserInfo({
 
 // Валидаторы форм
 
-const editFormValidator = new FormValidator(
-  validationConfig, 
-  editProfileConfig.formEdit
-);
+const formValidators = {}
 
-editFormValidator.enableValidation();
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    const formName = formElement.getAttribute('name');
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  })
+}
 
-const addFormValidator = new FormValidator(
-  validationConfig, 
-  addProfileConfig.formAdd
-);
-
-addFormValidator.enableValidation();
-
-const editAvatarFormValidator = new FormValidator(
-  validationConfig, 
-  editProfileConfig.formAvatar
-);
-
-editAvatarFormValidator.enableValidation();
+enableValidation(validationConfig);
 
 // Создание экземпляра формы редактирования профиля
 
@@ -144,7 +140,7 @@ const popupWithEditForm = new PopupWithForm(
 popupWithEditForm.setEventListeners();
 
 editProfileConfig.btnEdit.addEventListener('click', () => {
-  editFormValidator.resetValidation();
+  formValidators['user'].resetValidation();
   const userdata = userInfo.getUserInfo();
   popupWithEditForm.setInputValues(userdata);
   popupWithEditForm.open();
@@ -158,7 +154,10 @@ const popupWithAddForm = new PopupWithForm(
     popupWithAddForm.renderLoading(true);
     api
       .addCard(newItem)
-      .then(data => cardList.addItem(createCard(data)))
+      .then(data => {
+        cardList.addItem(createCard(data));
+        popupWithAddForm.close();
+      })
       .catch(err => console.log(err))
       .finally(() => popupWithAddForm.renderLoading(false));
 }, popupsElementsConfig)
@@ -166,7 +165,7 @@ const popupWithAddForm = new PopupWithForm(
 popupWithAddForm.setEventListeners();
 
 addProfileConfig.btnAdd.addEventListener('click', () => {
-  addFormValidator.resetValidation();
+  formValidators['newcard'].resetValidation();
   popupWithAddForm.open();
 })
 
@@ -178,7 +177,10 @@ const popupWithEditAvatarForm = new PopupWithForm(
     popupWithEditAvatarForm.renderLoading(true);
     api
       .editAvatar(item)
-      .then(data => userInfo.setUserInfo(data))
+      .then(data => {
+        userInfo.setUserInfo(data);
+        popupWithEditAvatarForm.close();
+      })
       .catch(err => console.log(err))
       .finally(() => popupWithEditAvatarForm.renderLoading(false));
   }, popupsElementsConfig)
@@ -186,6 +188,6 @@ const popupWithEditAvatarForm = new PopupWithForm(
 popupWithEditAvatarForm.setEventListeners();
 
 editProfileConfig.btnAvatar.addEventListener('click', () => {
-  editAvatarFormValidator.resetValidation();
+  formValidators['avatar'].resetValidation();
   popupWithEditAvatarForm.open();
 })
